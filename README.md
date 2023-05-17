@@ -22,9 +22,11 @@ El usuario se guardará en la BD y ya podremos utilizarlo
 
 ### GET
 
-1- /users/ --> Nos devuelve un listado de todos los usuarios registrados. Para que funcione es obligatorio indicar el Bearer token en el header (Authorization: Bearer )
+1- / --> Muestra el mensaje de bienvenida. Para que funcione es obligatorio indicar el Bearer token en el header (Authorization: Bearer )
 
-2- /users/{username} --> Devuelve la información del usuario con el nombre especificado. Para que funcione es obligatorio indicar el Bearer token en el header (Authorization: Bearer )
+2- /users/ --> Nos devuelve un listado de todos los usuarios registrados. Para que funcione es obligatorio indicar el Bearer token en el header (Authorization: Bearer )
+
+3- /users/{username} --> Devuelve la información del usuario con el nombre especificado. Para que funcione es obligatorio indicar el Bearer token en el header (Authorization: Bearer )
 
 ### DELETE
 
