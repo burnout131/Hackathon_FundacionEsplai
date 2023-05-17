@@ -10,8 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 /**
  * @author Marc
@@ -26,20 +26,25 @@ public class JwtGenerator {
 		Date expirationDate = new Date(currentDate.getTime() + Constants.TOKEN_EXPIRATION_TIME);
 
 		String token = Jwts.builder().setSubject(username).setIssuedAt(currentDate).setExpiration(expirationDate)
-				.signWith(SignatureAlgorithm.HS512, Constants.SUPER_SECRET_KEY).compact();
-		// .signWith(Keys.hmacShaKeyFor(Constants.SUPER_SECRET_KEY.getBytes())).compact();
+				.signWith(Constants.SECRET_KEY).compact();
 		return token;
 	}
 
 	public String getUserNameFromJwt(String token) {
-		Claims claims = Jwts.parser().setSigningKey(Constants.SUPER_SECRET_KEY).parseClaimsJws(token).getBody();
+		Jws<Claims> claims = Jwts.parserBuilder()
+                .setSigningKey(Constants.SECRET_KEY)
+                .build()
+                .parseClaimsJws(token);
 
-		return claims.getSubject();
+		return claims.getBody().getSubject();
 	}
 
 	public boolean validateToken(String token) {
 		try {
-			Jwts.parser().setSigningKey(Constants.SUPER_SECRET_KEY).parseClaimsJws(token);
+			Jwts.parserBuilder()
+            .setSigningKey(Constants.SECRET_KEY)
+            .build()
+            .parseClaimsJws(token);
 			return true;
 		} catch (Exception e) {
 			throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
