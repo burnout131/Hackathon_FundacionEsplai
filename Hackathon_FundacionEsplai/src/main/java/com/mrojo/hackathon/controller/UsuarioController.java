@@ -52,7 +52,14 @@ public class UsuarioController {
 		this.jwtGenerator = jwtGenerator;
 	}
 
-	
+	@GetMapping("/")
+	public String mensajeBienvenida() {
+		return "Bienvenido a mi API de autenticación \n"
+				+ "Desarrollador: Marc Rojo Gómez (a.k.a. burnout131). \n"
+				+ "https://github.com/burnout131 \n"
+				+ "Si estás viendo éste mensaje, significa que te has autenticado "
+				+ "correctamente mediante JWT.";
+	}
 	
 	@PostMapping("/login")
 	public AuthResponseDTO login(@RequestBody Usuario user) {
@@ -63,7 +70,6 @@ public class UsuarioController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String token = jwtGenerator.generateToken(authentication);
 		AuthResponseDTO authResponseDTO = new AuthResponseDTO(token);
-		//return new ResponseEntity<>(authResponseDTO, HttpStatus.OK);
 		return authResponseDTO;
 	}
 	
